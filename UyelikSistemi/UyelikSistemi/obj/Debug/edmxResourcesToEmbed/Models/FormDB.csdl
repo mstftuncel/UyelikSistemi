@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UyeSistemiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="uyeKayit">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="kullaniciadi" Type="String" MaxLength="101" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="uyeYorum" Relationship="UyeSistemiModel.FK_uyeYorum_uyeKayit" FromRole="uyeKayit" ToRole="uyeYorum" />
+  </EntityType>
+  <EntityContainer Name="UyeSistemiEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="uyeKayit" EntityType="Self.uyeKayit" />
+    <EntitySet Name="sysdiagrams" EntityType="UyeSistemiModel.sysdiagrams" />
+    <EntitySet Name="uyeYorum" EntityType="UyeSistemiModel.uyeYorum" />
+    <AssociationSet Name="FK_uyeYorum_uyeKayit" Association="UyeSistemiModel.FK_uyeYorum_uyeKayit">
+      <End Role="uyeKayit" EntitySet="uyeKayit" />
+      <End Role="uyeYorum" EntitySet="uyeYorum" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="uyeYorum">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="uyeId" Type="Int32" />
+    <Property Name="yorum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="uyeKayit" Relationship="UyeSistemiModel.FK_uyeYorum_uyeKayit" FromRole="uyeYorum" ToRole="uyeKayit" />
+  </EntityType>
+  <Association Name="FK_uyeYorum_uyeKayit">
+    <End Type="UyeSistemiModel.uyeKayit" Role="uyeKayit" Multiplicity="0..1" />
+    <End Type="UyeSistemiModel.uyeYorum" Role="uyeYorum" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="uyeKayit">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="uyeYorum">
+        <PropertyRef Name="uyeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
